@@ -1,5 +1,6 @@
 ﻿var hc = new HttpClient();
-var r = await hc.GetAsync("https://raw.githubusercontent.com/Aha43/ac21/main/21/1/Input.txt")
+var inputUri = (args.Length == 0 || args[0] != "e") ? "https://raw.githubusercontent.com/Aha43/ac21/main/21/1/Input.txt" : "https://raw.githubusercontent.com/Aha43/ac21/main/21/1/example.txt";
+var r = await hc.GetAsync(inputUri)
     .ConfigureAwait(continueOnCapturedContext: false);
 if (r.IsSuccessStatusCode)
 {
