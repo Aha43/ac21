@@ -5,33 +5,32 @@ var inputUri = (args[0] == "i") ? "https://raw.githubusercontent.com/Aha43/ac21/
 var r = await hc.GetAsync(inputUri)
     .ConfigureAwait(continueOnCapturedContext: false);
 
-var input = (await r.Content.ReadAsStringAsync().ConfigureAwait(continueOnCapturedContext: false)).Split().Select(e => 
+var input = (await r.Content.ReadAsStringAsync().ConfigureAwait(continueOnCapturedContext: false)).Split();
+var size = input[0].Length;
+
+var numbers = input.Select(e => 
 {
-    var retVal = new int[5];
-    for (int i = 0; i < 5; i++)
+    var retVal = new int[size];
+    for (int i = 0; i < size; i++)
     {
         retVal[i] = e[i] == '0' ? 0 : 1; 
     }
     return retVal;
 });
 
-var sums = new int[]
+var sums = new int[size];
+foreach (var e in numbers)
 {
-    0, 0, 0, 0, 0
-};
-
-foreach (var e in input)
-{
-    for (var i = 0; i < 5; i++)
+    for (var i = 0; i < size; i++)
     {
         sums[i] += e[i];
     }
 }
 
 var n = input.Count();
-var gammaRateBin = new int[5];
-var epsilonRateBin = new int[5];
-for (var i = 0; i < 5; i++)
+var gammaRateBin = new int[size];
+var epsilonRateBin = new int[size];
+for (var i = 0; i < size; i++)
 {
     var zeros = n - sums[i];
     if (zeros > sums[i])
@@ -44,12 +43,8 @@ for (var i = 0; i < 5; i++)
     }
 }
 
-Console.WriteLine($"Gamma rate bin: {gammaRateBin[0]}{gammaRateBin[1]}{gammaRateBin[2]}{gammaRateBin[3]}{gammaRateBin[4]}");
-Console.WriteLine($"Epsilon rate bin: {epsilonRateBin[0]}{epsilonRateBin[1]}{epsilonRateBin[2]}{epsilonRateBin[3]}{epsilonRateBin[4]}");
 
-var gammaRate = gammaRateBin[4] + 2*gammaRateBin[3] + 4*gammaRateBin[2] + 8*gammaRateBin[1] + 16*gammaRateBin[0];
-var epsilonRate = epsilonRateBin[4] + 2*epsilonRateBin[3] + 4*epsilonRateBin[2] + 8*epsilonRateBin[1] + 16*epsilonRateBin[0]; 
-
-Console.WriteLine($"Gamma rate: {gammaRate}, Epsilon rate: {epsilonRate}");
+var gammaRate = Convert.ToInt32(string.Join("", gammaRateBin), 2);
+var epsilonRate = Convert.ToInt32(string.Join("", epsilonRateBin), 2);
 
 Console.WriteLine(gammaRate * epsilonRate);
