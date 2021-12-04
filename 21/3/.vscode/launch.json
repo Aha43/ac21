@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Example, Part 1",
+            "name": "Example",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
@@ -16,7 +16,7 @@
             "stopAtEntry": false
         },
         {
-            "name": "Input, Part 1",
+            "name": "Input",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
