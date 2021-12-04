@@ -48,32 +48,38 @@ var epsilonRate = Convert.ToInt32(string.Join("", epsilonRateBin), 2);
 
 Console.WriteLine("Part one: " + (gammaRate * epsilonRate));
 
-var gammaIteration = numbers.Where(e => e[0] == gammaRateBin[0]).ToArray();
-var gi = 1;
-while (gammaIteration.Count() > 1 && gi < size)
+var oxIteration = numbers.ToArray();
+var done = false;
+var ii = 0;
+while (!done)
 {
-    var ones = sums[gi];
-    var zeros = n - ones;
+    var N = oxIteration.Length;
+    var ones = 0;
+    for (var k = 0; k < N; k++) ones += oxIteration[k][ii];
+    var zeros = N - ones;
     var criteria = (ones >= zeros) ? 1 : 0;
-    //gammaIteration = gammaIteration.Where(e => e[gi] == gammaRateBin[gi]).Select(e => e).ToArray();
-    gammaIteration = gammaIteration.Where(e => e[gi] == criteria).Select(e => e).ToArray();
-    gi++;
+    oxIteration = oxIteration.Where(e => e[ii] == criteria).Select(e => e).ToArray();
+    ii++;
+    done = (ii == N) || (oxIteration.Length < 2);
 }
 
-var epsilonIteration = numbers.Where(e => e[0] == epsilonRateBin[0]).ToArray();
-var ei = 1;
-while (epsilonIteration.Count() > 1 && ei < size)
+var co2Iteration = numbers.ToArray();
+done = false;
+ii = 0;
+while (!done)
 {
-    var ones = sums[ei];
-    var zeros = n - ones;
+    var N = co2Iteration.Length;
+    var ones = 0;
+    for (var k = 0; k < N; k++) ones += co2Iteration[k][ii];
+    var zeros = N - ones;
     var criteria = (zeros <= ones) ? 0 : 1;
-    //epsilonIteration = epsilonIteration.Where(e => e[ei] == epsilonRateBin[ei]).ToArray();
-    epsilonIteration = epsilonIteration.Where(e => e[ei] == criteria).ToArray();
-    ei++;
+    co2Iteration = co2Iteration.Where(e => e[ii] == criteria).Select(e => e).ToArray();
+    ii++;
+    done = (ii == N) || (co2Iteration.Length < 2);
 }
 
-var oxRatingBin = gammaIteration.FirstOrDefault();
-var co2RatingBin = epsilonIteration.FirstOrDefault();
+var oxRatingBin = oxIteration.FirstOrDefault();
+var co2RatingBin = co2Iteration.FirstOrDefault();
 
 if (oxRatingBin != null && co2RatingBin != null)
 {
